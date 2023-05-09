@@ -10,12 +10,9 @@
     <% if product.quantity == 0 %>
       <aside class='soldout'>Sold Out</aside>
     <% end %>
-    <aside>
-      <%= button_to add_item_cart_path(product_id: product.id), class: 'btn' ,
-      method: :post do %>
-        <%= fa_icon "shopping-cart", text: 'Add' %>
-      <% end %>
-    </aside>
-
+    <%= button_to add_item_cart_path(product_id: product.id), class: 'btn' ,
+    method: :post do %>
+      <%= fa_icon "shopping-cart", text: 'Add' %>
+    <% end %>
   </div>
 </article>
