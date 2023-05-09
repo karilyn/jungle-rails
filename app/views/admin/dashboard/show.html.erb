@@ -1,8 +1,7 @@
 <h1>Admin::Dashboard#show</h1>
-<div class="alert alert-info" role="alert">
-  Total number of products in database: <%= @product_count%>
-</div>
 
-<div class="alert alert-info" role="alert">
-  Total number of categories in database: <%= @category_count%>
-</div>
+<ul>
+  <li class="alert alert-info" role="alert"><a href="/admin/products">Products (<%= @product_count %>)</a>
+  <li  class="alert alert-info" role="alert"><a href="/admin/products">Categories (<%= @category_count %>)</a>
+</ul>
+
