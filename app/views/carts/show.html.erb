@@ -50,10 +50,8 @@
       </div>
     </div>
   <% else %>
-    <div class="alert alert-warning">
-      <span>Your cart is currently empty.</span>
-      <a href="/">Head back home</a>
-    </div>
+    <p class="alert alert-warning">Your cart is currently empty.</p>
+    <%= link_to 'Back to Home', root_path, class: 'btn-lg btn-primary' %>
   <% end %>
 
 </section>
