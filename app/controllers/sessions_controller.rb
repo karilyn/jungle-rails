@@ -16,14 +16,14 @@ class SessionsController < ApplicationController
       redirect_to root_path, notice: 'Successfully logged in!'
     else
       # if email or password incorrect, re-render login page:
-      flash.now.alert = "Incorrect email or password, try again"
+      flash.now.alert = "Incorrect email or password. Please try again."
       render :new
     end
   end
 
   def destroy
    log_out
-   redirect_to root_url
+   redirect_to root_url, notice: 'Succesfully logged out!'
   end
 
 
