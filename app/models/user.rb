@@ -1,7 +1,11 @@
 class User < ApplicationRecord
+
   has_secure_password
 
-  attr_accessible: :email, :password, :password_confirmation
+  EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-]+(\.[a-z\d\-]+)*\.[a-z]+\z/i
 
-  validates_uniqueness_of :email
+  validates_format_of :email, with: EMAIL_REGEX
+
+  validates :email, presence: true, uniqueness: true
+
 end
