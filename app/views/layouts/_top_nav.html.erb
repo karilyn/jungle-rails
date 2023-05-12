@@ -22,27 +22,44 @@
     </button>
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-        <%# <li class="nav-item dropdown">
-          <a
-            class="nav-link dropdown-toggle"
-            href="#"
-            id="navbarDropdown"
-            role="button"
-            data-bs-toggle="dropdown"
-            aria-expanded="false"
-          > %>
-            <%# Categories %>
-          <%# </a>
-          <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="navbarDropdown"> %>
+       <li class="nav-item dropdown">
+        <a
+          class="nav-link dropdown-toggle"
+          href="#"
+          id="navbarDropdown"
+          role="button"
+          data-bs-toggle="dropdown"
+          aria-expanded="false"
+        >
+        Categories
+        </a>
+          <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="navbarDropdown">
             <% Category.all.each do |category| %>
             <li class="nav-item">
               <%= link_to category.name, category, class: "nav-link" %>
             </li>
             <% end %>
-          <%# </ul>
-        </li> %>
+          </ul>
+        </li>
       </ul>
       <ul class="navbar-nav">
+        <% if current_user %>
+          <!-- current_user will return true if a user is logged in -->
+          <span class="nav-link">
+            <%= "Logged in as #{current_user.name}" %>
+          </span>
+          <li class="nav-item">
+            <%= link_to 'Log Out', logout_path, method: :delete, class: "nav-link" %>
+          </li>
+        <% else %>
+          <!-- not logged in -->
+          <li class="nav-item">
+            <%= link_to 'Log In', login_path, class: "nav-link" %>
+          </li>
+          <li class="nav-item">
+            <%= link_to 'Sign Up', new_user_path, class: "nav-link" %>
+
+        <% end %>
         <li class="nav-item">
           <%= link_to 'About', about_index_path, class: "nav-link" %>
         <li class="nav-item dropdown">
