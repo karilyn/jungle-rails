@@ -4,13 +4,19 @@ class ApplicationController < ActionController::Base
 
   protect_from_forgery with: :exception
 
-  #if session[:user_id] is nil, then the right side of the expression is not evaluated
+  #makes current_user available in views
+  helper_method :current_user
+
+  # Define the current_user method:
   def current_user
+    # Look up the current user based on user_id in the session cookie:
     @current_user ||= User.find(session[:user_id]) if session[:user_id]
   end
 
-  #makes current_user available in views
-  helper_method :current_user
+  def log_out
+    session.delete(:user_id)
+    @current_user = nil
+  end
 
   def authorize
     redirect_to '/login' unless current_user
