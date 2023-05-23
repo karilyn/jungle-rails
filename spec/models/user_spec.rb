@@ -45,6 +45,26 @@ RSpec.describe User, type: :model do
       expect(auth).to be_valid
     end
 
+    it "fails to authenticate when email is not valid" do
+      auth = User.authenticate_with_credentials(email: nil, password: "testing")
+      expect(auth).to be_nil
+    end
+
+    it "fails to authenticate when password is not valid" do
+      auth = User.authenticate_with_credentials(email: "test@test.com", password: nil)
+      expect(auth).to be_nil
+    end
+
+    it "authenticates when email has leading or trailing spaces" do
+      auth = User.authenticate_with_credentials(email: " test@test.com ", password: "testing")
+      expect(auth).to be_valid
+    end
+
+    it "authenticates when email is in the wrong case" do
+      auth = User.authenticate_with_credentials(email: "TEST@test.com", password: "testing")
+      expect(auth).to be_valid
+    end
+
 
 
   end
