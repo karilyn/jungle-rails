@@ -114,11 +114,15 @@ RSpec.describe User, type: :model do
 
   describe '.authenticate_with_credentials' do
     it "authenticates when credentials are valid" do
-      auth = User.authenticate_with_credentials(
-        "test@test.com",
-        "testing"
+      user = User.create(
+        first_name: "Test",
+        last_name: "Test",
+        email: "test@test.com",
+        password: "testing",
+        password_confirmation: "testing"
       )
-      expect(auth).to be_valid
+
+      expect(User.authenticate_with_credentials("test@test.com", "testing")).to eq(user)
     end
 
     it "fails to authenticate when email is not valid" do
@@ -138,20 +142,26 @@ RSpec.describe User, type: :model do
     end
 
     it "authenticates when email has leading or trailing spaces" do
-      auth = User.authenticate_with_credentials(
-        " test@test.com ",
-        "testing"
+      user = User.create(
+        first_name: "Test",
+        last_name: "Test",
+        email: "test@test.com",
+        password: "testing",
+        password_confirmation: "testing"
       )
-      expect(auth).to be_valid
+      expect(User.authenticate_with_credentials(" test@test.com ", "testing")).to eq(user)
     end
 
     it "authenticates when email is in the wrong case" do
-      auth = User.authenticate_with_credentials(
-        "TEST@test.com",
-        "testing"
+      user = User.create(
+        first_name: "Test",
+        last_name: "Test",
+        email: "test@test.com",
+        password: "testing",
+        password_confirmation: "testing"
       )
 
-      expect(auth).to be_valid
+      expect(User.authenticate_with_credentials("TEST@TEST.com", "testing")).to eq(user)
     end
   end
 end
