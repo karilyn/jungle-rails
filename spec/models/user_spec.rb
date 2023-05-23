@@ -22,7 +22,7 @@ RSpec.describe User, type: :model do
         password: "testing",
         password_confirmation: "testing"
       )
-      expect(user.errors.full_messages).to include("Name can't be blank")
+      expect(user.errors.full_messages).to include("First name can't be blank")
     end
 
     it "fails to save when last name is not set" do
@@ -33,7 +33,7 @@ RSpec.describe User, type: :model do
         password: "testing",
         password_confirmation: "testing"
       )
-      expect(user.errors.full_messages).to include("Name can't be blank")
+      expect(user.errors.full_messages).to include("Last name can't be blank")
     end
 
     it "fails to save when email is not set" do
@@ -77,7 +77,7 @@ RSpec.describe User, type: :model do
         password: "testing",
         password_confirmation: "testing1"
       )
-      expect(user.errors.full_messages).to include("Password confirmation doesn't match")
+      expect(user.errors.full_messages).to include("Password confirmation doesn't match Password")
     end
 
     it "fails to save when password is shorter than six characters" do
@@ -88,59 +88,70 @@ RSpec.describe User, type: :model do
         password: "test",
         password_confirmation: "test"
       )
-      expect(user.errors.full_messages).to include("Password is too short (minimum is 6 characters")
+      expect(user.errors.full_messages).to include("Password is too short (minimum is 6 characters)")
     end
-  end
 
-  describe '.authenticate_with_credentials' do
-    it "authenticates when credentials are valid" do
-      user = User.create(
+    it "fails to save when email is not unique" do
+      user1 = User.create(
         first_name: "Test",
         last_name: "Test",
         email: "test@test.com",
         password: "testing",
         password_confirmation: "testing"
       )
-      auth = User.authenticate_with_credentials(
+      user1.save!
+
+      user2 = User.create(
+        first_name: "Another",
+        last_name: "Test",
         email: "test@test.com",
-        password: "testing"
+        password: "testing",
+        password_confirmation: "testing"
+      )
+      expect(user2.errors.full_messages).to include("Email has already been taken")
+    end
+  end
+
+  describe '.authenticate_with_credentials' do
+    it "authenticates when credentials are valid" do
+      auth = User.authenticate_with_credentials(
+        "test@test.com",
+        "testing"
       )
       expect(auth).to be_valid
     end
 
     it "fails to authenticate when email is not valid" do
       auth = User.authenticate_with_credentials(
-        email: nil,
-        password: "testing"
+        nil,
+        "testing"
       )
       expect(auth).to be_nil
     end
 
     it "fails to authenticate when password is not valid" do
       auth = User.authenticate_with_credentials(
-        email: "test@test.com",
-        password: nil
+        "test@test.com",
+        nil
       )
       expect(auth).to be_nil
     end
 
     it "authenticates when email has leading or trailing spaces" do
       auth = User.authenticate_with_credentials(
-        email: " test@test.com ",
-        password: "testing"
+        " test@test.com ",
+        "testing"
       )
       expect(auth).to be_valid
     end
 
     it "authenticates when email is in the wrong case" do
       auth = User.authenticate_with_credentials(
-        email: "TEST@test.com",
-        password: "testing"
+        "TEST@test.com",
+        "testing"
       )
+
       expect(auth).to be_valid
     end
-
-
-
   end
 end
